@@ -81,11 +81,11 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
 
     DATASET_NAME = dataset.name
 
-    # if net_params['full_graph']:
-    #     st = time.time()
-    #     print("[!] Adding full graph connectivity..")
-    #     dataset._make_full_graph()
-    #     print('Time taken to add full graph connectivity: ', time.time() - st)
+    if net_params['full_graph']:
+        st = time.time()
+        print("[!] Adding full graph connectivity..")
+        dataset._make_full_graph()
+        print('Time taken to add full graph connectivity: ', time.time() - st)
 
     trainset, valset, testset = dataset.train, dataset.val, dataset.test
 
