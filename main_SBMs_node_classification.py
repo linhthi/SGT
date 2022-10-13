@@ -80,11 +80,11 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
 
     DATASET_NAME = dataset.name
 
-    if net_params['full_graph']:
-        st = time.time()
-        print("[!] Adding full graph connectivity..")
-        dataset._make_full_graph()
-        print('Time taken to add full graph connectivity: ', time.time() - st)
+    # if net_params['full_graph']:
+    #     st = time.time()
+    #     print("[!] Adding full graph connectivity..")
+    #     dataset._make_full_graph()
+    #     print('Time taken to add full graph connectivity: ', time.time() - st)
 
     trainset, valset, testset = dataset.train, dataset.val, dataset.test
 
@@ -115,6 +115,7 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
 
     model = GCNNet(net_params)
     model = model.to(device)
+    print(model)
 
     optimizer = optim.Adam(model.parameters(), lr=params['init_lr'], weight_decay=params['weight_decay'])
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min',
