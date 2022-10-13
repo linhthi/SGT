@@ -112,6 +112,9 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
     print("Validation Graphs: ", len(valset))
     print("Test Graphs: ", len(testset))
     print("Number of Classes: ", net_params['n_classes'])
+    net_params['in_dim'] = trainset[0].ndata['feat'].shape[1]
+
+    print(net_params)
 
     model = GCNNet(net_params)
     model = model.to(device)
