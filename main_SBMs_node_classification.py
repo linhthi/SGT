@@ -62,6 +62,7 @@ def view_model_param(net_params):
     model = GCNNet(net_params)
     total_param = 0
     print("MODEL DETAILS:\n")
+    print(model.parameters())
     for param in model.parameters():
         total_param += np.prod(list(param.data.size()))
 
@@ -116,7 +117,7 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
 
     model = GCNNet(net_params)
     model = model.to(device)
-    print(model)
+    print("Model parameter: ", model.parameters())
 
     optimizer = optim.Adam(model.parameters(), lr=params['init_lr'], weight_decay=params['weight_decay'])
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min',

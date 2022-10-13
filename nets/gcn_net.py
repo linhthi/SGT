@@ -40,3 +40,5 @@ class GCNNet(nn.Module):
         criterion = nn.CrossEntropyLoss(weight=weight)
         loss = criterion(pred, label)
         return loss
+
+
