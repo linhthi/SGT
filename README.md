@@ -7,3 +7,5 @@ This repository follow structure of [SAN](https://github.com/DevinKreuzer/SAN).
 [x] Experiment on other dataset.
 
 [x] Add some baselines (SAT, SAN, GAT, DeeperGCN, etc.) for comparison.
+
+[x] Add storage experiment results for comparison (ex: save npy loss).
