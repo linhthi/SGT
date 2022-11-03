@@ -2,9 +2,9 @@
 This repository follow structure of [SAN](https://github.com/DevinKreuzer/SAN).
 
 ## TODO:
-[x] Add graph transformer layer and nets.
+[v] Add graph transformer layer and nets.
 
-[x] Experiment on other dataset.
+[x] Experiment on other dataset (AmazonCoBuyComputer, Reddit, MUTAGD, PubMed, Cora, CiteSeer, CLUSTER)
 
 [x] Add some baselines (SAT, SAN, GAT, DeeperGCN, etc.) for comparison.
 
