@@ -2,10 +2,21 @@
 This repository follow structure of [SAN](https://github.com/DevinKreuzer/SAN).
 
 ## TODO:
-[v] Add graph transformer layer and nets.
+- [x] Add graph transformer layer and nets.
 
-[x] Experiment on other dataset (AmazonCoBuyComputer, Reddit, MUTAGD, PubMed, Cora, CiteSeer, CLUSTER)
+- [ ] Experiment on other datasets:
+  - [x] Node classification: Cora, CiteSeer, CLUSTER, Reddit, MUTAGD, PubMed
+  - [ ] Link prediction: AmazonCoBuyComputer, Reddit, MovieLens
+  - [ ] Graph classification: SBMs, CIFAR10, CIFAR100, MNIST
 
-[x] Add some baselines (SAT, SAN, GAT, DeeperGCN, GPS, Performer, etc.) for comparison.
+- [ ] Add some baselines:
+  - [ ] SAT
+  - [X] SAN
+  - [ ] GAT
+  - [ ] DeeperGCN
+  - [ ] GPS
+  - [ ] Performer
+  - [X] GCN
+  - [ ] GCN with skip-conection
 
 [x] Add storage experiment results for comparison (ex: save npy loss).
