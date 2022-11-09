@@ -93,7 +93,7 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
     test_mask = g.ndata['test_mask']
     val_mask = g.ndata['val_mask']
 
-    trainset, valset, testset = dataset.train, dataset.val, dataset.test
+    train_set, val_set, test_set = dataset.train, dataset.val, dataset.test
 
     net_params['total_param'] = view_model_param(net_params)
 
@@ -115,9 +115,9 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
     if device.type == 'cuda':
         torch.cuda.manual_seed(params['seed'])
 
-    print("Training Graphs: ", len(trainset))
-    print("Validation Graphs: ", len(valset))
-    print("Test Graphs: ", len(testset))
+    print("Training Graphs: ", len(train_set))
+    print("Validation Graphs: ", len(val_set))
+    print("Test Graphs: ", len(test_set))
     print("Number of Classes: ", net_params['n_classes'])
     print(net_params)
 
@@ -137,9 +137,9 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
     # import train and evaluate functions
     from train.train_SBMs_node_classification import train_epoch, evaluate_network
 
-    train_loader = DataLoader(trainset, batch_size=params['batch_size'], shuffle=True, collate_fn=dataset.collate)
-    val_loader = DataLoader(valset, batch_size=params['batch_size'], shuffle=False, collate_fn=dataset.collate)
-    test_loader = DataLoader(testset, batch_size=params['batch_size'], shuffle=False, collate_fn=dataset.collate)
+    train_loader = DataLoader(train_set, batch_size=params['batch_size'], shuffle=True, collate_fn=dataset.collate)
+    val_loader = DataLoader(val_set, batch_size=params['batch_size'], shuffle=False, collate_fn=dataset.collate)
+    test_loader = DataLoader(test_set, batch_size=params['batch_size'], shuffle=False, collate_fn=dataset.collate)
 
     # At any point you can hit Ctrl + C to break out of training early.
     try:
