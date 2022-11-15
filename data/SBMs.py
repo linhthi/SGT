@@ -12,7 +12,7 @@ import numpy as np
 import networkx as nx
 
 import hashlib
-import precompute_features as pf
+import data.precompute_features as pf
 
 
 class load_SBMsDataSetDGL(torch.utils.data.Dataset):

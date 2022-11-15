@@ -2,7 +2,7 @@
     File to load dataset based on user control from main file
 """
 from data.SBMs import SBMsDataset
-from dgl.data import CoraGraphDataset, CiteSeerDataset, RedditDataset, PubmedGraphDataset
+from dgl.data import CoraGraphDataset, CiteseerGraphDataset, RedditDataset, PubmedGraphDataset
 
 def load_data(dataset):
     """
@@ -17,7 +17,7 @@ def load_data(dataset):
     elif dataset == 'CORA':
         return CoraGraphDataset()
     elif dataset == 'CITESEER':
-        return CiteSeerDataset()
+        return CiteseerGraphDataset()
     elif dataset == 'REDDIT':
         return RedditDataset()
     elif dataset == 'PUBMED':

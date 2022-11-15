@@ -1,0 +1,52 @@
+{
+    "gpu": {
+        "use": false,
+        "id": 0
+    },
+
+    "model": "GT",
+    "dataset": "cora",
+
+    "out_dir": "out/citation/cora/full/node",
+
+    "params": {
+        "seed": 41,
+        "epochs": 300,
+        "batch_size": 128,
+        "init_lr": 0.001,
+        "lr_reduce_factor": 0.5,
+        "lr_schedule_patience": 10,
+        "min_lr": 1e-4,
+        "weight_decay": 0.0,
+        "print_epoch_interval": 1,
+        "max_time": 24
+    },
+
+    "net_params": {
+        "model": "none",
+        "full_graph": true,
+        "gamma": 1e-1,
+        "m": 10,
+
+        "n_layers": 3,
+        "hidden_dim": 128,
+        "out_dim": 48,
+
+        "LPE": "node",
+        "LPE_layers": 1,
+        "LPE_dim": 16,
+        "LPE_n_heads": 4,
+
+        "GT_layers": 16,
+        "GT_hidden_dim": 48,
+        "GT_out_dim": 48,
+        "GT_n_heads": 8,
+
+        "residual": true,
+        "readout": "mean",
+        "in_feat_dropout": 0.0,
+        "dropout": 0.2,
+        "layer_norm": false,
+        "batch_norm": true
+    }
+}
