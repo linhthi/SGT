@@ -33,7 +33,9 @@ class DotDict(dict):
     IMPORTING CUSTOM MODULES/METHODS
 """
 from nets.gcn_net import GCNNet
+from nets.citations.SAN import SAN
 from data.data import load_data
+from nets.load_net import gnn_model 
 
 """
     GPU Setup
@@ -59,7 +61,7 @@ def gpu_setup(use_gpu, gpu_id):
 
 
 def view_model_param(net_params):
-    model = GCNNet(net_params)
+    model = gnn_model(net_params['model'], net_params)
     total_param = 0
     print("MODEL DETAILS:\n")
     print(model.parameters())
@@ -86,6 +88,7 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
     #     print("[!] Adding full graph connectivity..")
     #     dataset._make_full_graph()
     #     print('Time taken to add full graph connectivity: ', time.time() - st)
+    
     g = dataset[0]
     features = g.ndata['feat']
     labels = g.ndata['label']
@@ -93,7 +96,7 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
     test_mask = g.ndata['test_mask']
     val_mask = g.ndata['val_mask']
 
-    train_set, val_set, test_set = dataset.train, dataset.val, dataset.test
+    # train_set, val_set, test_set = dataset.train, dataset.val, dataset.test
 
     net_params['total_param'] = view_model_param(net_params)
 
@@ -115,9 +118,9 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
     if device.type == 'cuda':
         torch.cuda.manual_seed(params['seed'])
 
-    print("Training Graphs: ", len(train_set))
-    print("Validation Graphs: ", len(val_set))
-    print("Test Graphs: ", len(test_set))
+    print("Training Graphs: ", len(train_mask))
+    print("Validation Graphs: ", len(val_mask))
+    print("Test Graphs: ", len(test_mask))
     print("Number of Classes: ", net_params['n_classes'])
     print(net_params)
 
@@ -135,11 +138,11 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
     epoch_train_accs, epoch_val_accs, epoch_test_accs = [], [], []
 
     # import train and evaluate functions
-    from train.train_SBMs_node_classification import train_epoch, evaluate_network
+    from train.train_citation_dataset_node_classification import train_epoch, evaluate_network
 
-    train_loader = DataLoader(train_set, batch_size=params['batch_size'], shuffle=True, collate_fn=dataset.collate)
-    val_loader = DataLoader(val_set, batch_size=params['batch_size'], shuffle=False, collate_fn=dataset.collate)
-    test_loader = DataLoader(test_set, batch_size=params['batch_size'], shuffle=False, collate_fn=dataset.collate)
+    # train_loader = DataLoader(train_set, batch_size=params['batch_size'], shuffle=True, collate_fn=dataset.collate)
+    # val_loader = DataLoader(val_set, batch_size=params['batch_size'], shuffle=False, collate_fn=dataset.collate)
+    # test_loader = DataLoader(test_set, batch_size=params['batch_size'], shuffle=False, collate_fn=dataset.collate)
 
     # At any point you can hit Ctrl + C to break out of training early.
     try:
@@ -148,11 +151,9 @@ def train_val_pipeline(MODEL_NAME, dataset, params, net_params, dirs):
 
                 start = time.time()
 
-                epoch_train_loss, epoch_train_acc, optimizer = train_epoch(model, optimizer, device, train_loader,
-                                                                           epoch)
-
-                epoch_val_loss, epoch_val_acc = evaluate_network(model, device, val_loader, epoch)
-                _, epoch_test_acc = evaluate_network(model, device, test_loader, epoch)
+                epoch_train_loss, epoch_train_acc, optimizer = train_epoch(model, optimizer, device, g, train_mask)
+                epoch_val_loss, epoch_val_acc = evaluate_network(model, device, g, val_mask)
+                _, epoch_test_acc = evaluate_network(model, device, g, test_mask)
 
                 epoch_train_losses.append(epoch_train_loss)
                 epoch_val_losses.append(epoch_val_loss)
@@ -348,10 +349,8 @@ def main():
 
     # SBM
 
-    net_params['in_dim'] = torch.unique(dataset.train[0][0].ndata['feat'], dim=0).size(
-        0)  # node_dim (feat is an integer)
-
-    net_params['n_classes'] = torch.unique(dataset.train[0][1], dim=0).size(0)
+    net_params['in_dim'] = dataset[0].ndata['feat'].shape[1]
+    net_params['n_classes'] = dataset.num_classes
 
     root_log_dir = out_dir + 'logs/' + MODEL_NAME + "_" + DATASET_NAME + "_GPU" + str(
         config['gpu']['id']) + "_" + time.strftime('%Hh%Mm%Ss_on_%b_%d_%Y')
